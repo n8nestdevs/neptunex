@@ -1,0 +1,5 @@
+{
+  "name": "Copy of Frazer Shipping - Vessel Tracking",
+  "description": "An internal platform for managing and visualizing operational information for a fleet of tanker vessels. This tool centralizes vessel identification, itinerary, key documentation, contacts, and critical voyage checkpoints through manual data entry.",
+  "requestFramePermissions": []
+}

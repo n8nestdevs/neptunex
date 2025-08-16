@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEPTUNex</title>
+
+    <!-- Redirige a #/login cuando no hay hash (HashRouter) -->
+    <script>
+      (function () {
+        if (!location.hash || location.hash === "#/") {
+          location.replace(location.pathname + location.search + "#/login");
+        }
+      })();
+    </script>
+
+    <!-- CDN de Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: { 900: '#0A192F', 800: '#172A45', 700: '#303C55' },
+              teal: { 500: '#64FFDA', 400: '#78ffee' },
+              slate: { 400: '#8892B0', 200: '#CCD6F6' }
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Pequeño fallback por si el CDN tarda (solo color de fondo) -->
+    <style>
+      body { background:#0A192F; }
+    </style>
+  </head>
+  <body class="bg-navy-900">
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
