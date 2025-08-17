@@ -34,24 +34,15 @@ const HomePage: React.FC = () => {
       }));
   }, [vessels]);
 
-  // Altura objetivo del mapa:
-  //  - 56px header (h-14)
-  //  - ~48px de margen/padding del main + título
-  // Ajusta este número si ves 1-2px de diferencia.
   const MAP_HEIGHT = 'calc(100vh - 56px - 48px)';
 
   return (
     <div className="space-y-4 overflow-hidden">
       <h1 className="text-xl font-bold text-slate-100">Dashboard</h1>
 
-      {/*
-        Layout:
-        - Left: stacked KPIs (fixed column ~300px)
-        - Right: Fleet map card, aligned right and clipped, no page scroll
-      */}
       <div className="grid gap-4 lg:grid-cols-[300px_minmax(900px,1fr)] items-start">
-        {/* LEFT COLUMN (stacked KPIs) */}
-        <div className="space-y-3">
+        {/* LEFT COLUMN (KPIs en 2 columnas) */}
+        <div className="grid grid-cols-2 gap-3">
           {kpis.map((kpi, i) => (
             <div
               key={i}
@@ -73,12 +64,9 @@ const HomePage: React.FC = () => {
             style={{ height: MAP_HEIGHT }}
           >
             <div className="text-slate-300 font-medium mb-2">Fleet map</div>
-
-            {/* Map fills the remaining height of the card */}
             <div className="h-[calc(100%-32px)]">
               <MapView markers={markers} height="100%" />
             </div>
-
             {markers.length === 0 && (
               <div className="text-slate-500 text-xs mt-2">
                 No positions yet. Default global view is shown.
