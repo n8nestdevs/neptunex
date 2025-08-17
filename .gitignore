@@ -1,8 +1,26 @@
-# Local Netlify folder
-.netlify
-node_modules
-dist
-.env
-.DS_Store
+# dependencies
 node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# builds
 dist/
+build/
+
+# misc
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+
+# editors
+.vscode/
+.idea/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
