@@ -20,15 +20,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 const AppFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="min-h-screen bg-navy-900 text-slate-200 font-sans">
     <Header />
-
-    {/* Contenedor centrado que incluye Sidebar + Main */}
-    <div className="w-full flex justify-center">
-      <div className="w-full max-w-[1440px] flex px-4 sm:px-6 lg:px-8">
-        <Sidebar />
-        <main className="flex-1 py-4 sm:py-6 lg:py-8">
-          {children}
-        </main>
-      </div>
+    {/* Sidebar pegado a la izquierda; el contenido se centra con un max-width */}
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        {children}
+      </main>
     </div>
   </div>
 );
@@ -39,7 +36,6 @@ function App() {
       <AppProvider>
         <HashRouter>
           <Routes>
-            {/* Login / landing */}
             <Route
               path="/login"
               element={
@@ -60,7 +56,6 @@ function App() {
               }
             />
 
-            {/* Home */}
             <Route
               path="/"
               element={
@@ -71,8 +66,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Tracking */}
             <Route
               path="/tracking"
               element={
@@ -83,8 +76,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Shipment Log */}
             <Route
               path="/shipment-log"
               element={
@@ -95,8 +86,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* New vessel (Admin / SuperAdmin) */}
             <Route
               path="/vessel/new"
               element={
@@ -107,8 +96,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Vessel detail */}
             <Route
               path="/vessel/:vesselId"
               element={
@@ -119,8 +106,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* SuperAdmin — single user management page */}
             <Route
               path="/superadmin"
               element={
@@ -132,7 +117,6 @@ function App() {
               }
             />
 
-            {/* Fallback */}
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </HashRouter>

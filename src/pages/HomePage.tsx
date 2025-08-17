@@ -39,29 +39,29 @@ const HomePage: React.FC = () => {
       <h1 className="text-2xl font-bold text-slate-100">Dashboard</h1>
 
       {/*
-        New layout:
-        - Left: stacked KPIs (fixed column ~320px)
-        - Right: Fleet map card, aligned to the right with max width to avoid gray bands
+        Adjusted layout for desktop:
+        - Left: stacked KPIs (slightly narrower, compact typography)
+        - Right: Fleet map fills all remaining width (no right alignment)
       */}
-      <div className="grid gap-6 lg:grid-cols-[320px_minmax(900px,1fr)] items-start">
-        {/* LEFT COLUMN (stacked KPIs) */}
-        <div className="space-y-4">
+      <div className="grid gap-6 lg:grid-cols-[300px_minmax(700px,1fr)] items-start">
+        {/* LEFT COLUMN (stacked KPIs, compact) */}
+        <div className="space-y-3">
           {kpis.map((kpi, i) => (
             <div
               key={i}
-              className="bg-navy-800 p-4 rounded-lg border border-navy-700 flex items-center gap-4 hover:border-teal-400 transition-colors"
+              className="bg-navy-800 p-4 rounded-lg border border-navy-700 flex items-center gap-3 hover:border-teal-400 transition-colors"
             >
               <div className="flex-shrink-0">{kpi.icon}</div>
               <div>
-                <div className="text-slate-400 text-sm">{kpi.label}</div>
-                <div className="text-3xl font-semibold text-slate-100">{kpi.value}</div>
+                <div className="text-slate-400 text-xs">{kpi.label}</div>
+                <div className="text-2xl font-semibold text-slate-100">{kpi.value}</div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* RIGHT COLUMN (MAP) */}
-        <div className="justify-self-end w-full max-w-[1500px]">
+        {/* RIGHT COLUMN (MAP — fills available width) */}
+        <div className="w-full">
           <div className="bg-navy-800 rounded-lg border border-navy-700 p-3">
             <div className="text-slate-300 font-medium mb-2">Fleet map</div>
             {/* Map height. Adjust if you want it taller/shorter */}
