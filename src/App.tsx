@@ -22,7 +22,10 @@ const AppFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <Header />
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+      {/* Max width fijo de escritorio + centrado */}
+      <main className="flex-1 w-full max-w-[1440px] mx-auto p-4 sm:p-6 lg:p-8">
+        {children}
+      </main>
     </div>
   </div>
 );
@@ -38,7 +41,7 @@ function App() {
               path="/login"
               element={
                 <div
-                  className="min-h-screen w-full flex items-center justify-center"
+                  className="relative min-h-screen w-full flex items-center justify-center"
                   style={{
                     backgroundImage: 'url(/neptuno-login-bg.png)',
                     backgroundSize: 'cover',
