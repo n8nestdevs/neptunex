@@ -20,12 +20,15 @@ import ProtectedRoute from './components/ProtectedRoute';
 const AppFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="min-h-screen bg-navy-900 text-slate-200 font-sans">
     <Header />
-    <div className="flex">
-      <Sidebar />
-      {/* Max width fijo de escritorio + centrado */}
-      <main className="flex-1 w-full max-w-[1440px] mx-auto p-6 lg:p-8">
-        {children}
-      </main>
+
+    {/* Contenedor centrado que incluye Sidebar + Main */}
+    <div className="w-full flex justify-center">
+      <div className="w-full max-w-[1440px] flex px-4 sm:px-6 lg:px-8">
+        <Sidebar />
+        <main className="flex-1 py-4 sm:py-6 lg:py-8">
+          {children}
+        </main>
+      </div>
     </div>
   </div>
 );
