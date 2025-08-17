@@ -15,9 +15,9 @@ const HomePage: React.FC = () => {
   const openAlerts = 0;
 
   const kpis = [
-    { label: 'Total vessels', value: total, icon: <ShipIcon className="w-6 h-6 text-teal-400" /> },
-    { label: 'With data (mock)', value: withData, icon: <DatabaseIcon className="w-6 h-6 text-blue-400" /> },
-    { label: 'Open alerts', value: openAlerts, icon: <AlertTriangleIcon className="w-6 h-6 text-red-400" /> },
+    { label: 'Total vessels', value: total, icon: <ShipIcon className="w-5 h-5 text-teal-400" /> },
+    { label: 'With data (mock)', value: withData, icon: <DatabaseIcon className="w-5 h-5 text-blue-400" /> },
+    { label: 'Open alerts', value: openAlerts, icon: <AlertTriangleIcon className="w-5 h-5 text-red-400" /> },
   ];
 
   // Markers from vessel.position (if exists)
@@ -34,38 +34,51 @@ const HomePage: React.FC = () => {
       }));
   }, [vessels]);
 
+  // Altura objetivo del mapa:
+  //  - 56px header (h-14)
+  //  - ~48px de margen/padding del main + título
+  // Ajusta este número si ves 1-2px de diferencia.
+  const MAP_HEIGHT = 'calc(100vh - 56px - 48px)';
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-100">Dashboard</h1>
+    <div className="space-y-4 overflow-hidden">
+      <h1 className="text-xl font-bold text-slate-100">Dashboard</h1>
 
       {/*
-        Adjusted layout for desktop:
-        - Left: stacked KPIs (slightly narrower, compact typography)
-        - Right: Fleet map fills all remaining width (no right alignment)
+        Layout:
+        - Left: stacked KPIs (fixed column ~300px)
+        - Right: Fleet map card, aligned right and clipped, no page scroll
       */}
-      <div className="grid gap-6 lg:grid-cols-[300px_minmax(700px,1fr)] items-start">
-        {/* LEFT COLUMN (stacked KPIs, compact) */}
+      <div className="grid gap-4 lg:grid-cols-[300px_minmax(900px,1fr)] items-start">
+        {/* LEFT COLUMN (stacked KPIs) */}
         <div className="space-y-3">
           {kpis.map((kpi, i) => (
             <div
               key={i}
-              className="bg-navy-800 p-4 rounded-lg border border-navy-700 flex items-center gap-3 hover:border-teal-400 transition-colors"
+              className="bg-navy-800 p-3 rounded-lg border border-navy-700 flex items-center gap-3 hover:border-teal-400 transition-colors"
             >
               <div className="flex-shrink-0">{kpi.icon}</div>
               <div>
                 <div className="text-slate-400 text-xs">{kpi.label}</div>
-                <div className="text-2xl font-semibold text-slate-100">{kpi.value}</div>
+                <div className="text-2xl font-semibold text-slate-100 leading-tight">{kpi.value}</div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* RIGHT COLUMN (MAP — fills available width) */}
-        <div className="w-full">
-          <div className="bg-navy-800 rounded-lg border border-navy-700 p-3">
+        {/* RIGHT COLUMN (MAP) */}
+        <div className="justify-self-end w-full max-w-[1500px]">
+          <div
+            className="bg-navy-800 rounded-lg border border-navy-700 p-3 overflow-hidden relative"
+            style={{ height: MAP_HEIGHT }}
+          >
             <div className="text-slate-300 font-medium mb-2">Fleet map</div>
-            {/* Map height. Adjust if you want it taller/shorter */}
-            <MapView markers={markers} height={700} />
+
+            {/* Map fills the remaining height of the card */}
+            <div className="h-[calc(100%-32px)]">
+              <MapView markers={markers} height="100%" />
+            </div>
+
             {markers.length === 0 && (
               <div className="text-slate-500 text-xs mt-2">
                 No positions yet. Default global view is shown.
