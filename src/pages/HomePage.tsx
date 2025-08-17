@@ -40,13 +40,13 @@ const HomePage: React.FC = () => {
     <div className="space-y-4 overflow-hidden">
       <h1 className="text-xl font-bold text-slate-100">Dashboard</h1>
 
-      <div className="grid gap-4 lg:grid-cols-[300px_minmax(900px,1fr)] items-start">
-        {/* LEFT COLUMN (KPIs en 2 columnas) */}
-        <div className="grid grid-cols-2 gap-3">
+      <div className="grid gap-4 lg:grid-cols-[220px_minmax(900px,1fr)] items-start">
+        {/* LEFT COLUMN (KPIs en columna, mismo tamaño) */}
+        <div className="grid grid-cols-1 gap-3">
           {kpis.map((kpi, i) => (
             <div
               key={i}
-              className="bg-navy-800 p-3 rounded-lg border border-navy-700 flex items-center gap-3 hover:border-teal-400 transition-colors"
+              className="bg-navy-800 h-24 w-full p-3 rounded-lg border border-navy-700 flex items-center gap-3 hover:border-teal-400 transition-colors"
             >
               <div className="flex-shrink-0">{kpi.icon}</div>
               <div>
