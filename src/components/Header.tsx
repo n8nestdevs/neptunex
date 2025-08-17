@@ -9,10 +9,9 @@ const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-30 bg-navy-900/80 backdrop-blur border-b border-navy-800">
+    // h-14 = 56px. z-50 para que nunca lo tape el mapa
+    <header className="sticky top-0 z-50 bg-navy-900/80 backdrop-blur border-b border-navy-800">
       <div className="flex items-center justify-between h-14 px-3">
-        
-        {/* Logo + Brand */}
         <Link
           to={isAuthenticated ? '/tracking' : '/login'}
           className="flex items-center text-slate-100"
@@ -22,7 +21,6 @@ const Header: React.FC = () => {
           <span className="font-semibold tracking-wide">NEPTUNex</span>
         </Link>
 
-        {/* Right side */}
         <div className="flex items-center gap-3 pr-3">
           {isAuthenticated && user ? (
             <>
@@ -31,7 +29,6 @@ const Header: React.FC = () => {
                   SuperAdmin
                 </Link>
               )}
-
               <div className="hidden md:flex items-center text-slate-300 text-sm">
                 <IconUser className="w-4 h-4 mr-1" />
                 <span className="mr-2">{user.name}</span>
@@ -39,7 +36,6 @@ const Header: React.FC = () => {
                   {user.role}
                 </span>
               </div>
-
               <button
                 onClick={logout}
                 className="text-sm bg-navy-800 hover:bg-navy-700 border border-navy-700 text-slate-200 px-3 py-1 rounded"

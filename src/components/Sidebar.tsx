@@ -38,7 +38,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <aside
-      className={`shrink-0 border-r border-navy-700 bg-navy-800/60 hidden md:flex md:flex-col md:h-[calc(100vh-64px)]`}
+      className="shrink-0 border-r border-navy-700 bg-navy-800/60 hidden md:flex md:flex-col h-[calc(100vh-56px)]"
       style={{ width: collapsed ? 68 : 240 }}
     >
       {/* sidebar header */}
@@ -53,34 +53,37 @@ const Sidebar: React.FC = () => {
         </button>
       </div>
 
-      {/* main nav */}
-      <nav className="p-3 flex flex-col gap-2">
-        <Item to="/"              label="Home"         icon={<span>🏠</span>} collapsed={collapsed} />
-        <Item to="/tracking"      label="Tracking"     icon={<span>🛰️</span>} collapsed={collapsed} />
-        <Item to="/shipment-log"  label="Shipment Log" icon={<span>📦</span>} collapsed={collapsed} />
-      </nav>
+      {/* contenido scrolleable */}
+      <div className="flex-1 overflow-auto">
+        {/* main nav */}
+        <nav className="p-3 flex flex-col gap-2">
+          <Item to="/"              label="Home"         icon={<span>🏠</span>} collapsed={collapsed} />
+          <Item to="/tracking"      label="Tracking"     icon={<span>🛰️</span>} collapsed={collapsed} />
+          <Item to="/shipment-log"  label="Shipment Log" icon={<span>📦</span>} collapsed={collapsed} />
+        </nav>
 
-      {/* administration */}
-      {isSuperAdmin && (
-        <div className="mt-4 px-3">
-          {!collapsed && (
-            <div className="text-xs uppercase tracking-wider text-slate-500 mb-2">
-              Administration
+        {/* administration */}
+        {isSuperAdmin && (
+          <div className="mt-4 px-3">
+            {!collapsed && (
+              <div className="text-xs uppercase tracking-wider text-slate-500 mb-2">
+                Administration
+              </div>
+            )}
+            <div className="flex flex-col gap-2">
+              <Item
+                to="/superadmin"
+                label="User management"
+                icon={<span>🛠️</span>}
+                collapsed={collapsed}
+              />
             </div>
-          )}
-          <div className="flex flex-col gap-2">
-            <Item
-              to="/superadmin"
-              label="User management"
-              icon={<span>🛠️</span>}
-              collapsed={collapsed}
-            />
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* footer */}
-      <div className="mt-auto p-3 text-slate-500 text-xs">
+      <div className="p-3 text-slate-500 text-xs">
         {!collapsed && <div>Developed by ElonTheCat</div>}
       </div>
     </aside>
