@@ -31,15 +31,15 @@ const HomePage: React.FC = () => {
       }));
   }, [vessels]);
 
-  // Altura máxima del card del mapa: 100vh - header(56px) - margen superior aprox (64px)
-  // Ajusta "64" si necesitas afinar  (40–80 suele quedar bien según tu padding/espaciados).
-  const MAP_CARD_MAX_HEIGHT = 'calc(100vh - 56px - 64px)';
+  // Altura del card del mapa = viewport - header(56px) - margen superior/aproximación (64px).
+  // Ajusta los 64 si necesitas afinar (50–80px según tu padding).
+  const MAP_CARD_HEIGHT = 'calc(100vh - 56px - 64px)';
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-slate-100">Dashboard</h1>
 
-      {/* Mantengo tu layout EXACTO (KPI a la izquierda, mapa a la derecha) */}
+      {/* Mismo layout que tenías: KPIs a la izquierda, mapa a la derecha */}
       <div className="grid gap-6 lg:grid-cols-[320px_minmax(900px,1fr)] items-start">
         {/* KPIs (sin cambios) */}
         <div className="space-y-4">
@@ -57,25 +57,17 @@ const HomePage: React.FC = () => {
           ))}
         </div>
 
-        {/* MAPA — solo limitamos altura y evitamos overflow */}
+        {/* MAPA: altura explícita + overflow oculto */}
         <div className="justify-self-end w-full max-w-[1500px]">
           <div
             className="bg-navy-800 rounded-lg border border-navy-700 p-3 overflow-hidden"
-            style={{ maxHeight: MAP_CARD_MAX_HEIGHT }}
+            style={{ height: MAP_CARD_HEIGHT, maxHeight: MAP_CARD_HEIGHT }}
           >
             <div className="text-slate-300 font-medium mb-2">Fleet map</div>
-
-            {/* Este contenedor ocupa todo lo que quede dentro del card */}
+            {/* Ocupa todo lo que queda dentro del card (descontando el título) */}
             <div className="w-full" style={{ height: 'calc(100% - 28px)' }}>
-              {/* IMPORTANTE: el mapa llena su contenedor, sin altura fija */}
               <MapView markers={markers} height="100%" />
             </div>
-
-            {markers.length === 0 && (
-              <div className="text-slate-500 text-xs mt-2">
-                No positions yet. Default global view is shown.
-              </div>
-            )}
           </div>
         </div>
       </div>
