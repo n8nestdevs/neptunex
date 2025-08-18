@@ -23,6 +23,13 @@ export interface Position {
   cog?: number; // course over ground
 }
 
+export interface NotificationRule {
+  id: string;
+  channel: 'email' | 'phone';
+  target: string;      // dirección de correo o número
+  label?: string;      // nombre opcional para mostrar
+}
+
 export interface Vessel {
   id: string; // IMO
   name: string;
@@ -41,4 +48,5 @@ export interface Vessel {
   documents: Document[];
   complianceChecklist: ChecklistItem[];
   position?: Position;
+  notifications?: NotificationRule[]; // ⬅️ agregado
 }

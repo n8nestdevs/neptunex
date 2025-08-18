@@ -1,15 +1,23 @@
+// src/pages/NewVesselPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Vessel, ChecklistItem } from '../types';
+import type {
+  Vessel,
+  ChecklistItem,
+  Document,
+  NotificationRule,
+} from '../types';
 import { initialVessels } from '../data/mockData';
 
 import NewVesselForm, { FormState } from '../components/newVessel/NewVesselForm';
 import NewVesselChecklistPanel from '../components/newVessel/NewVesselChecklistPanel';
+import NewVesselDocumentsPanel from '../components/newVessel/NewVesselDocumentsPanel';
+import NewVesselNotificationsPanel from '../components/newVessel/NewVesselNotificationsPanel';
 
 const NewVesselPage: React.FC = () => {
   const navigate = useNavigate();
 
-  // formulario
+  // ===== Form state =====
   const [form, setForm] = useState<FormState>({
     id: '',
     name: '',
@@ -25,13 +33,15 @@ const NewVesselPage: React.FC = () => {
     sog: '',
     cog: '',
   });
-
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // checklist para este buque
+  // ===== Right column panels state =====
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [notifications, setNotifications] = useState<NotificationRule[]>([]);
 
+  // ===== Validation =====
   const validate = () => {
     if (!form.id || !form.name || !form.flag) return 'Required fields missing (IMO, Name, Flag).';
     if (!form.etd || !form.eta) return 'You must enter ETD and ETA.';
@@ -50,6 +60,7 @@ const NewVesselPage: React.FC = () => {
     return null;
   };
 
+  // ===== Submit =====
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const err = validate();
@@ -73,11 +84,14 @@ const NewVesselPage: React.FC = () => {
         destinationPort: form.destinationPort,
         eta: form.eta,
       },
-      documents: [],
+      // 👇 guardamos lo que venga de los paneles derechos
+      documents,
       complianceChecklist: checklist,
-      position: latNum != null && lonNum != null
-        ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
-        : undefined,
+      notifications,
+      position:
+        latNum != null && lonNum != null
+          ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
+          : undefined,
     };
 
     initialVessels.push(newVessel);
@@ -86,19 +100,18 @@ const NewVesselPage: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      {/* Título a lo ancho */}
+      {/* Page title */}
       <h1 className="text-2xl font-bold text-slate-100">Add New Vessel</h1>
 
-      {/* Dos tarjetas alineadas arriba */}
+      {/* Main grid: left form + right stacked panels */}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] items-start">
-        {/* Card izquierda: FORM */}
+        {/* Left card (Form) */}
         <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
           {error && (
             <div className="mb-4 p-3 rounded bg-red-900/40 border border-red-700 text-red-200">
               {error}
             </div>
           )}
-
           <NewVesselForm
             form={form}
             setForm={setForm}
@@ -107,11 +120,21 @@ const NewVesselPage: React.FC = () => {
           />
         </div>
 
-        {/* Card derecha: CHECKLIST */}
-        <NewVesselChecklistPanel
-          value={checklist}
-          onChange={setChecklist}
-        />
+        {/* Right column: sticky stack of panels */}
+        <div className="lg:sticky lg:top-[72px] space-y-4">
+          <NewVesselChecklistPanel
+            value={checklist}
+            onChange={setChecklist}
+          />
+          <NewVesselDocumentsPanel
+            value={documents}
+            onChange={setDocuments}
+          />
+          <NewVesselNotificationsPanel
+            value={notifications}
+            onChange={setNotifications}
+          />
+        </div>
       </div>
     </div>
   );
