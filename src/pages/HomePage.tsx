@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
   }, [vessels]);
 
   // Altura del card del mapa (ajusta 64px si necesitas afinar)
-  const MAP_CARD_HEIGHT = 'calc(100vh - 56px - 64px)';
+  const MAP_CARD_HEIGHT = 'calc(100vh - 56px - 60px)';
 
   return (
     <div className="space-y-6">
