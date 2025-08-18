@@ -36,9 +36,9 @@ const HomePage: React.FC = () => {
   const MAP_HEIGHT = 'calc(100vh - 56px - 40px)'; // 56 header, 40 padding/márgenes
 
   return (
-    <div className="space-y-3 overflow-hidden">
+    <div className="space-y-6">
       {/* Título más compacto */}
-      <h1 className="text-2xl lg:text-3xl font-bold text-slate-100 leading-tight">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-slate-100">Dashboard</h1>
 
       <div className="grid gap-4 lg:grid-cols-[220px_minmax(900px,1fr)] items-start">
         {/* KPIs en columna; todas iguales */}
