@@ -1,4 +1,3 @@
-// src/pages/NewVesselPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Vessel, ChecklistItem } from '../types';
@@ -30,7 +29,7 @@ const NewVesselPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // checklist seleccionado para este buque
+  // checklist para este buque
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
 
   const validate = () => {
@@ -75,7 +74,7 @@ const NewVesselPage: React.FC = () => {
         eta: form.eta,
       },
       documents: [],
-      complianceChecklist: checklist, // ← lo elegido en el panel
+      complianceChecklist: checklist,
       position: latNum != null && lonNum != null
         ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
         : undefined,
@@ -86,31 +85,34 @@ const NewVesselPage: React.FC = () => {
   };
 
   return (
-    // Título SOLO en la columna izquierda → el panel derecho queda alineado arriba con él
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] items-start">
-      {/* Columna izquierda */}
-      <div className="space-y-6 max-w-3xl">
-        <h1 className="text-2xl font-bold text-slate-100">Add New Vessel</h1>
+    <div className="space-y-4">
+      {/* Título a lo ancho */}
+      <h1 className="text-2xl font-bold text-slate-100">Add New Vessel</h1>
 
-        {error && (
-          <div className="p-3 rounded bg-red-900/40 border border-red-700 text-red-200">
-            {error}
-          </div>
-        )}
+      {/* Dos tarjetas alineadas arriba */}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] items-start">
+        {/* Card izquierda: FORM */}
+        <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
+          {error && (
+            <div className="mb-4 p-3 rounded bg-red-900/40 border border-red-700 text-red-200">
+              {error}
+            </div>
+          )}
 
-        <NewVesselForm
-          form={form}
-          setForm={setForm}
-          saving={saving}
-          onSubmit={handleSubmit}
+          <NewVesselForm
+            form={form}
+            setForm={setForm}
+            saving={saving}
+            onSubmit={handleSubmit}
+          />
+        </div>
+
+        {/* Card derecha: CHECKLIST */}
+        <NewVesselChecklistPanel
+          value={checklist}
+          onChange={setChecklist}
         />
       </div>
-
-      {/* Columna derecha: Checklist (alineado arriba + sticky y sin overflow) */}
-      <NewVesselChecklistPanel
-        value={checklist}
-        onChange={setChecklist}
-      />
     </div>
   );
 };

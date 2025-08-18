@@ -1,4 +1,3 @@
-// src/components/newVessel/NewVesselChecklistPanel.tsx
 import React from 'react';
 import type { ChecklistItem } from '../../types';
 import ChecklistBuilder from '../ChecklistBuilder';
@@ -19,11 +18,8 @@ const NewVesselChecklistPanel: React.FC<Props> = ({ value, onChange }) => {
         max-h-[calc(100vh-64px-24px)]
         overflow-auto
       "
-      // top-16 (64px) ≈ altura del header → queda alineado con el título de la izquierda
-      // max-h: evita que el botón se vaya “fuera” y no genera scroll global
     >
       <h2 className="text-lg font-semibold text-slate-100 mb-3">Checklist</h2>
-
       <ChecklistBuilder value={value} onChange={onChange} />
     </div>
   );
