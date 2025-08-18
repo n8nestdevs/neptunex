@@ -1,3 +1,4 @@
+// src/pages/NewVesselPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Vessel, ChecklistItem } from '../types';
@@ -23,7 +24,7 @@ type FormState = {
 const NewVesselPage: React.FC = () => {
   const navigate = useNavigate();
 
-  // formulario
+  // Form state
   const [form, setForm] = useState<FormState>({
     id: '',
     name: '',
@@ -42,7 +43,7 @@ const NewVesselPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // checklist seleccionado para este buque
+  // Checklist selected for this vessel
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,9 +93,12 @@ const NewVesselPage: React.FC = () => {
         eta: form.eta,
       },
       documents: [],
-      // 👇 Guardamos exactamente lo que el usuario armó en el panel derecho
+      // Store exactly what was built on the right panel
       complianceChecklist: checklist,
-      position: latNum != null && lonNum != null ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum } : undefined,
+      position:
+        latNum != null && lonNum != null
+          ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
+          : undefined,
     };
 
     initialVessels.push(newVessel);
@@ -102,35 +106,73 @@ const NewVesselPage: React.FC = () => {
   };
 
   return (
-    // Dos columnas: izquierda formulario, derecha checklist
+    // Two columns: left form, right checklist
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
       <div className="space-y-6 max-w-3xl">
         <h1 className="text-2xl font-bold text-slate-100">Add New Vessel</h1>
 
-        {error && <div className="p-3 rounded bg-red-900/40 border border-red-700 text-red-200">{error}</div>}
+        {error && (
+          <div className="p-3 rounded bg-red-900/40 border border-red-700 text-red-200">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-slate-300 text-sm mb-1">IMO *</label>
-              <input name="id" value={form.id} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="IMO9334567" required />
+              <input
+                name="id"
+                value={form.id}
+                onChange={handleChange}
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                placeholder="IMO9334567"
+                required
+              />
             </div>
             <div>
               <label className="block text-slate-300 text-sm mb-1">Name *</label>
-              <input name="name" value={form.name} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="Andromeda Voyager" required />
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                placeholder="Andromeda Voyager"
+                required
+              />
             </div>
             <div>
               <label className="block text-slate-300 text-sm mb-1">Flag *</label>
-              <input name="flag" value={form.flag} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="Panama" required />
+              <input
+                name="flag"
+                value={form.flag}
+                onChange={handleChange}
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                placeholder="Panama"
+                required
+              />
             </div>
             <div>
               <label className="block text-slate-300 text-sm mb-1">Contact Email</label>
-              <input name="email" value={form.email} onChange={handleChange} type="email" className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="ops@shipowner.com" />
+              <input
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                type="email"
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                placeholder="ops@shipowner.com"
+              />
             </div>
             <div>
               <label className="block text-slate-300 text-sm mb-1">Phone</label>
-              <input name="phone" value={form.phone} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="+56 9 1234 5678" />
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                placeholder="+56 9 1234 5678"
+              />
             </div>
           </div>
 
@@ -138,19 +180,45 @@ const NewVesselPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-slate-300 text-sm mb-1">Departure Port</label>
-              <input name="departurePort" value={form.departurePort} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="Valparaíso" />
+              <input
+                name="departurePort"
+                value={form.departurePort}
+                onChange={handleChange}
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                placeholder="Valparaíso"
+              />
             </div>
             <div>
               <label className="block text-slate-300 text-sm mb-1">ETD</label>
-              <input name="etd" value={form.etd} onChange={handleChange} type="datetime-local" className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" required />
+              <input
+                name="etd"
+                value={form.etd}
+                onChange={handleChange}
+                type="datetime-local"
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                required
+              />
             </div>
             <div>
               <label className="block text-slate-300 text-sm mb-1">Destination Port</label>
-              <input name="destinationPort" value={form.destinationPort} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="San Antonio" />
+              <input
+                name="destinationPort"
+                value={form.destinationPort}
+                onChange={handleChange}
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                placeholder="San Antonio"
+              />
             </div>
             <div>
               <label className="block text-slate-300 text-sm mb-1">ETA</label>
-              <input name="eta" value={form.eta} onChange={handleChange} type="datetime-local" className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" required />
+              <input
+                name="eta"
+                value={form.eta}
+                onChange={handleChange}
+                type="datetime-local"
+                className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                required
+              />
             </div>
           </div>
 
@@ -160,19 +228,43 @@ const NewVesselPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-slate-300 text-sm mb-1">Lat (-90 to 90)</label>
-                <input name="lat" value={form.lat} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="-33.45" />
+                <input
+                  name="lat"
+                  value={form.lat}
+                  onChange={handleChange}
+                  className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                  placeholder="-33.45"
+                />
               </div>
               <div>
                 <label className="block text-slate-300 text-sm mb-1">Lon (-180 to 180)</label>
-                <input name="lon" value={form.lon} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="-70.67" />
+                <input
+                  name="lon"
+                  value={form.lon}
+                  onChange={handleChange}
+                  className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                  placeholder="-70.67"
+                />
               </div>
               <div>
                 <label className="block text-slate-300 text-sm mb-1">SOG (kn)</label>
-                <input name="sog" value={form.sog} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="12.3" />
+                <input
+                  name="sog"
+                  value={form.sog}
+                  onChange={handleChange}
+                  className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                  placeholder="12.3"
+                />
               </div>
               <div>
                 <label className="block text-slate-300 text-sm mb-1">COG (°)</label>
-                <input name="cog" value={form.cog} onChange={handleChange} className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200" placeholder="280" />
+                <input
+                  name="cog"
+                  value={form.cog}
+                  onChange={handleChange}
+                  className="w-full p-2 rounded bg-navy-800 border border-navy-700 text-slate-200"
+                  placeholder="280"
+                />
               </div>
             </div>
             <div className="text-slate-500 text-xs">
@@ -190,8 +282,8 @@ const NewVesselPage: React.FC = () => {
         </form>
       </div>
 
-      {/* COLUMNA DERECHA: Checklist constructor */}
-      <div className="lg:sticky lg:top-[72px]">
+      {/* RIGHT COLUMN: Checklist builder (top-aligned, no overflow) */}
+      <div className="self-start w-full max-w-[360px]">
         <ChecklistBuilder value={checklist} onChange={setChecklist} />
       </div>
     </div>
