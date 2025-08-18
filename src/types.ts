@@ -1,6 +1,6 @@
 export enum UserRole {
   Admin = 'Admin',
-  ReadOnly = 'Usuario de Consulta',
+  ReadOnly = 'ReadOnly',
 }
 
 export interface Document {
@@ -24,7 +24,7 @@ export interface Position {
 }
 
 export interface Vessel {
-  id: string; // Using IMO number as a unique ID
+  id: string; // IMO
   name: string;
   flag: string;
   imageUrl: string;
@@ -40,5 +40,5 @@ export interface Vessel {
   };
   documents: Document[];
   complianceChecklist: ChecklistItem[];
-  position?: Position; // ✅ Nueva propiedad
+  position?: Position;
 }
