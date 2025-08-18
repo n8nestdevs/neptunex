@@ -1,4 +1,3 @@
-// src/pages/HomePage.tsx
 import React, { useMemo } from 'react';
 import { initialVessels } from '../data/mockData';
 import type { Vessel } from '../types';
@@ -6,10 +5,8 @@ import MapView, { type MarkerData } from '../components/MapView';
 import { ShipIcon, DatabaseIcon, AlertTriangleIcon } from '../components/Icons';
 
 const HomePage: React.FC = () => {
-  // Local mock data with position already included
   const vessels: Vessel[] = useMemo(() => initialVessels, []);
 
-  // KPIs (mock)
   const total = vessels.length;
   const withData = vessels.length;
   const openAlerts = 0;
@@ -20,28 +17,31 @@ const HomePage: React.FC = () => {
     { label: 'Open alerts', value: openAlerts, icon: <AlertTriangleIcon className="w-5 h-5 text-red-400" /> },
   ];
 
-  // Markers from vessel.position (if exists)
-  const markers: MarkerData[] = useMemo(() => {
-    return vessels
-      .filter(v => !!v.position)
-      .map(v => ({
-        id: v.id,
-        name: v.name,
-        lat: v.position!.lat,
-        lon: v.position!.lon,
-        sog: v.position!.sog,
-        cog: v.position!.cog,
-      }));
-  }, [vessels]);
+  const markers: MarkerData[] = useMemo(
+    () =>
+      vessels
+        .filter(v => !!v.position)
+        .map(v => ({
+          id: v.id,
+          name: v.name,
+          lat: v.position!.lat,
+          lon: v.position!.lon,
+          sog: v.position!.sog,
+          cog: v.position!.cog,
+        })),
+    [vessels]
+  );
 
-  const MAP_HEIGHT = 'calc(100vh - 56px - 48px)';
+  // Altura del contenedor de mapa para evitar scroll vertical y alinear con sidebar
+  const MAP_HEIGHT = 'calc(100vh - 56px - 40px)'; // 56 header, 40 padding/márgenes
 
   return (
-    <div className="space-y-4 overflow-hidden">
-      <h1 className="text-xl font-bold text-slate-100">Dashboard</h1>
+    <div className="space-y-3 overflow-hidden">
+      {/* Título más compacto */}
+      <h1 className="text-2xl lg:text-3xl font-bold text-slate-100 leading-tight">Dashboard</h1>
 
       <div className="grid gap-4 lg:grid-cols-[220px_minmax(900px,1fr)] items-start">
-        {/* LEFT COLUMN (KPIs en columna, mismo tamaño) */}
+        {/* KPIs en columna; todas iguales */}
         <div className="grid grid-cols-1 gap-3">
           {kpis.map((kpi, i) => (
             <div
@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
           ))}
         </div>
 
-        {/* RIGHT COLUMN (MAP) */}
+        {/* Mapa alineado al top, sin sobrepasar el header ni la parte inferior del sidebar */}
         <div className="justify-self-end w-full max-w-[1500px]">
           <div
             className="bg-navy-800 rounded-lg border border-navy-700 p-3 overflow-hidden relative"
@@ -67,11 +67,6 @@ const HomePage: React.FC = () => {
             <div className="h-[calc(100%-32px)]">
               <MapView markers={markers} height="100%" />
             </div>
-            {markers.length === 0 && (
-              <div className="text-slate-500 text-xs mt-2">
-                No positions yet. Default global view is shown.
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -17,27 +16,14 @@ import { AppProvider } from './context/AppContext';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
-/**
- * Marco de páginas protegidas:
- * - Contenedor debajo del header con altura fija = viewport - header (56px).
- * - Sidebar a la izquierda y <main> con scroll propio y z-index bajo el header.
- */
 const AppFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="min-h-screen bg-navy-900 text-slate-200 font-sans">
     <Header />
-    <div className="flex h-[calc(100vh-56px)]"> {/* 56px = h-14 del Header */}
+    <div className="flex">
       <Sidebar />
-      <main
-        className="
-          relative z-0 flex-1 h-full overflow-auto
-          px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8
-        "
-      >
-        {/* Wrapper opcional con ancho máximo de escritorio.
-            Si quieres que el contenido quede más a la izquierda, quita max-w y mx-auto */}
-        <div className="w-full max-w-[1440px] mx-auto">
-          {children}
-        </div>
+      {/* Menos padding arriba para alinear con el primer item del sidebar */}
+      <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-4">
+        {children}
       </main>
     </div>
   </div>
@@ -49,7 +35,6 @@ function App() {
       <AppProvider>
         <HashRouter>
           <Routes>
-            {/* Login / landing */}
             <Route
               path="/login"
               element={
@@ -70,7 +55,6 @@ function App() {
               }
             />
 
-            {/* Home */}
             <Route
               path="/"
               element={
@@ -81,8 +65,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Tracking */}
             <Route
               path="/tracking"
               element={
@@ -93,8 +75,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Shipment Log */}
             <Route
               path="/shipment-log"
               element={
@@ -105,8 +85,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* New vessel (Admin / SuperAdmin) */}
             <Route
               path="/vessel/new"
               element={
@@ -117,8 +95,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Vessel detail */}
             <Route
               path="/vessel/:vesselId"
               element={
@@ -129,8 +105,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* SuperAdmin */}
             <Route
               path="/superadmin"
               element={
@@ -141,8 +115,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            {/* Fallback */}
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </HashRouter>
