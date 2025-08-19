@@ -1,29 +1,31 @@
 // src/pages/NewVesselPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type {
-  Vessel,
-  ChecklistItem,
-  Document,
-  NotificationRule,
-} from '../types';
+import type { Vessel, ChecklistItem } from '../types';
 import { initialVessels } from '../data/mockData';
 
-import NewVesselForm, { FormState } from '../components/newVessel/NewVesselForm';
+import IdentificationFormCard, { IdentificationFormState } from '../components/newVessel/IdentificationFormCard';
+import ContactFormCard, { ContactFormState } from '../components/newVessel/ContactFormCard';
+import VoyageFormCard, { VoyageFormState } from '../components/newVessel/VoyageFormCard';
+
 import NewVesselChecklistPanel from '../components/newVessel/NewVesselChecklistPanel';
 import NewVesselDocumentsPanel from '../components/newVessel/NewVesselDocumentsPanel';
 import NewVesselNotificationsPanel from '../components/newVessel/NewVesselNotificationsPanel';
 
+export type FormState = IdentificationFormState & ContactFormState & VoyageFormState;
+
 const NewVesselPage: React.FC = () => {
   const navigate = useNavigate();
 
-  // ===== Form state =====
   const [form, setForm] = useState<FormState>({
+    // Identification
     id: '',
     name: '',
     flag: '',
+    // Contact
     email: '',
     phone: '',
+    // Voyage
     departurePort: '',
     etd: '',
     destinationPort: '',
@@ -33,15 +35,17 @@ const NewVesselPage: React.FC = () => {
     sog: '',
     cog: '',
   });
+
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // ===== Right column panels state =====
+  // checklist para este buque
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [notifications, setNotifications] = useState<NotificationRule[]>([]);
 
-  // ===== Validation =====
+  // Helpers
+  const setFormPartial = (patch: Partial<FormState>) =>
+    setForm(prev => ({ ...prev, ...patch }));
+
   const validate = () => {
     if (!form.id || !form.name || !form.flag) return 'Required fields missing (IMO, Name, Flag).';
     if (!form.etd || !form.eta) return 'You must enter ETD and ETA.';
@@ -60,13 +64,13 @@ const NewVesselPage: React.FC = () => {
     return null;
   };
 
-  // ===== Submit =====
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const err = validate();
     if (err) { setError(err); return; }
 
     setSaving(true);
+
     const latNum = form.lat ? Number(form.lat) : undefined;
     const lonNum = form.lon ? Number(form.lon) : undefined;
     const sogNum = form.sog ? Number(form.sog) : undefined;
@@ -84,14 +88,11 @@ const NewVesselPage: React.FC = () => {
         destinationPort: form.destinationPort,
         eta: form.eta,
       },
-      // 👇 guardamos lo que venga de los paneles derechos
-      documents,
+      documents: [],
       complianceChecklist: checklist,
-      notifications,
-      position:
-        latNum != null && lonNum != null
-          ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
-          : undefined,
+      position: latNum != null && lonNum != null
+        ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
+        : undefined,
     };
 
     initialVessels.push(newVessel);
@@ -100,42 +101,53 @@ const NewVesselPage: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      {/* Page title */}
+      {/* Título */}
       <h1 className="text-2xl font-bold text-slate-100">Add New Vessel</h1>
 
-      {/* Main grid: left form + right stacked panels */}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] items-start">
-        {/* Left card (Form) */}
-        <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
-          {error && (
-            <div className="mb-4 p-3 rounded bg-red-900/40 border border-red-700 text-red-200">
-              {error}
-            </div>
-          )}
-          <NewVesselForm
-            form={form}
-            setForm={setForm}
-            saving={saving}
-            onSubmit={handleSubmit}
+      {error && (
+        <div className="p-3 rounded bg-red-900/40 border border-red-700 text-red-200">
+          {error}
+        </div>
+      )}
+
+      {/* Grid principal: igual que en VesselDetail */}
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+        {/* Columna izquierda (span 2): Identification + Contact en 2 columnas, luego Voyage a todo el ancho */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <IdentificationFormCard
+              value={form}
+              onChange={setFormPartial}
+            />
+            <ContactFormCard
+              value={form}
+              onChange={setFormPartial}
+            />
+          </div>
+
+          <VoyageFormCard
+            value={form}
+            onChange={setFormPartial}
           />
+
+          <div className="flex justify-start pt-1">
+            <button
+              type="submit"
+              disabled={saving}
+              className="bg-teal-500 hover:bg-teal-400 text-navy-900 font-semibold px-4 py-2 rounded-md border border-teal-400 disabled:opacity-60"
+            >
+              {saving ? 'Saving…' : 'Save'}
+            </button>
+          </div>
         </div>
 
-        {/* Right column: sticky stack of panels */}
-        <div className="lg:sticky lg:top-[72px] space-y-4">
-          <NewVesselChecklistPanel
-            value={checklist}
-            onChange={setChecklist}
-          />
-          <NewVesselDocumentsPanel
-            value={documents}
-            onChange={setDocuments}
-          />
-          <NewVesselNotificationsPanel
-            value={notifications}
-            onChange={setNotifications}
-          />
+        {/* Columna derecha (span 1): Panels apilados como en el detalle */}
+        <div className="lg:col-span-1 space-y-4">
+          <NewVesselDocumentsPanel />
+          <NewVesselChecklistPanel value={checklist} onChange={setChecklist} />
+          <NewVesselNotificationsPanel />
         </div>
-      </div>
+      </form>
     </div>
   );
 };
