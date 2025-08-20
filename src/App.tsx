@@ -35,25 +35,8 @@ function App() {
       <AppProvider>
         <HashRouter>
           <Routes>
-            <Route
-              path="/login"
-              element={
-                <div
-                  className="relative min-h-screen w-full flex items-center justify-center"
-                  style={{
-                    backgroundImage: 'url(/neptuno-login-bg.png)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                >
-                  <div className="absolute inset-0 bg-navy-900/50 pointer-events-none" />
-                  <div className="relative z-10 w-full max-w-md">
-                    <LoginPage />
-                  </div>
-                </div>
-              }
-            />
+            {/* Login limpio, sin wrappers ni fondos extra */}
+            <Route path="/login" element={<LoginPage />} />
 
             <Route
               path="/"
