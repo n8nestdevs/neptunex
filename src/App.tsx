@@ -1,3 +1,4 @@
+// src/App.tsx
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -11,6 +12,7 @@ import DetailPage from './pages/DetailPage';
 import NewVesselPage from './pages/NewVesselPage';
 import LoginPage from './pages/LoginPage';
 import SuperAdminPage from './pages/SuperAdminPage';
+import CheckpointsAlertsPage from './pages/CheckpointsAlertsPage'; // ⬅️ NUEVO
 
 import { AppProvider } from './context/AppContext';
 import { AuthProvider } from './context/AuthContext';
@@ -69,6 +71,16 @@ function App() {
               }
             />
             <Route
+              path="/checkpoints"
+              element={
+                <ProtectedRoute>
+                  <AppFrame>
+                    <CheckpointsAlertsPage />
+                  </AppFrame>
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/vessel/new"
               element={
                 <ProtectedRoute roles={['Admin', 'SuperAdmin']}>
@@ -98,6 +110,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </HashRouter>

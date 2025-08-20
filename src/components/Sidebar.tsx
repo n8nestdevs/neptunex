@@ -57,9 +57,10 @@ const Sidebar: React.FC = () => {
       <div className="flex-1 overflow-auto">
         {/* main nav */}
         <nav className="p-3 flex flex-col gap-2">
-          <Item to="/"              label="Home"         icon={<span>🏠</span>} collapsed={collapsed} />
-          <Item to="/tracking"      label="Tracking"     icon={<span>🛰️</span>} collapsed={collapsed} />
-          <Item to="/shipment-log"  label="Shipment Log" icon={<span>📦</span>} collapsed={collapsed} />
+          <Item to="/"              label="Home"               icon={<span>🏠</span>} collapsed={collapsed} />
+          <Item to="/tracking"      label="Tracking"           icon={<span>🛰️</span>} collapsed={collapsed} />
+          <Item to="/shipment-log"  label="Shipment Log"       icon={<span>📦</span>} collapsed={collapsed} />
+          <Item to="/checkpoints"   label="Checkpoints Alerts" icon={<span>🔔</span>} collapsed={collapsed} />
         </nav>
 
         {/* administration */}
