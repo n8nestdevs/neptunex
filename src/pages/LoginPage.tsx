@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
           <img
             src="/frazeroil.jpeg"
             alt="FRAZEROIL"
-            className="h-10 object-contain"
+            className="h-20 object-contain"
           />
         </div>
 
