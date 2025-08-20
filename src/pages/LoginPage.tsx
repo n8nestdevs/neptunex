@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
         {/* Logo (asegúrate de poner el archivo en /public/frazer-logo.png) */}
         <div className="w-full flex justify-center mb-4">
           <img
-            src="/frazer-logo.png"
+            src="/frazeroil.jpeg"
             alt="FRAZEROIL"
             className="h-10 object-contain"
           />
