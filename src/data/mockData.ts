@@ -11,9 +11,9 @@ export const initialVessels: Vessel[] = [
     contact: { email: 'master@andromeda.com', phone: '+1-202-555-0171' },
     voyage: {
       departurePort: 'Port of Houston, USA',
-      etd: '2024-07-15T10:00:00Z',
+      etd: '2025-07-15T10:00:00Z',
       destinationPort: 'Port of Rotterdam, Netherlands',
-      eta: '2024-07-30T14:00:00Z',
+      eta: '2025-08-30T14:00:00Z',
     },
     documents: [
       { id: 'doc1', name: "Ship's tanks volumetric composite samples - 2024-07-14", url: '#', uploadedAt: '2024-07-14T09:00:00Z' },
@@ -34,9 +34,9 @@ export const initialVessels: Vessel[] = [
     contact: { email: 'captain@orionspirit.net', phone: '+1-202-555-0182' },
     voyage: {
       departurePort: 'Ras Tanura, Saudi Arabia',
-      etd: '2024-07-20T08:00:00Z',
+      etd: '2025-07-20T08:00:00Z',
       destinationPort: 'Port of Singapore, Singapore',
-      eta: '2024-08-05T22:00:00Z',
+      eta: '2025-08-25T22:00:00Z',
     },
     documents: [],
     complianceChecklist: [
