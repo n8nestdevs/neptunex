@@ -17,29 +17,18 @@ export type FormState = IdentificationFormState & ContactFormState & VoyageFormS
 const NewVesselPage: React.FC = () => {
   const navigate = useNavigate();
 
+  // ---- form principal
   const [form, setForm] = useState<FormState>({
-    // Identification
-    id: '',
-    name: '',
-    flag: '',
-    // Contact
-    email: '',
-    phone: '',
-    // Voyage
-    departurePort: '',
-    etd: '',
-    destinationPort: '',
-    eta: '',
-    lat: '',
-    lon: '',
-    sog: '',
-    cog: '',
+    id: '', name: '', flag: '',
+    email: '', phone: '',
+    departurePort: '', etd: '',
+    destinationPort: '', eta: '',
+    lat: '', lon: '', sog: '', cog: '',
   });
-
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Panels (derecha)
+  // ---- paneles derecha
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [notifications, setNotifications] = useState<NotificationRule[]>([]);
@@ -69,7 +58,6 @@ const NewVesselPage: React.FC = () => {
     e.preventDefault();
     const err = validate();
     if (err) { setError(err); return; }
-
     setSaving(true);
 
     const latNum = form.lat ? Number(form.lat) : undefined;
@@ -89,13 +77,10 @@ const NewVesselPage: React.FC = () => {
         destinationPort: form.destinationPort,
         eta: form.eta,
       },
-      documents,                    // ← lo que se armó en el panel
-      complianceChecklist: checklist,
-      position: latNum != null && lonNum != null
-        ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
-        : undefined,
-      // Si luego agregas notifications al tipo Vessel, puedes guardarlas aquí también.
-      // notifications,
+      documents, // <- desde panel
+      complianceChecklist: checklist, // <- desde panel
+      position: latNum != null && lonNum != null ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum } : undefined,
+      // notifications no iban en Vessel; si quieres guardarlas, podemos extender el tipo.
     };
 
     initialVessels.push(newVessel);
@@ -113,13 +98,11 @@ const NewVesselPage: React.FC = () => {
       )}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
-        {/* Columna izquierda */}
         <div className="lg:col-span-2 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <IdentificationFormCard value={form} onChange={setFormPartial} />
             <ContactFormCard value={form} onChange={setFormPartial} />
           </div>
-
           <VoyageFormCard value={form} onChange={setFormPartial} />
 
           <div className="flex justify-start pt-1">
@@ -133,7 +116,6 @@ const NewVesselPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Columna derecha */}
         <div className="lg:col-span-1 space-y-4">
           <NewVesselDocumentsPanel value={documents} onChange={setDocuments} />
           <NewVesselChecklistPanel value={checklist} onChange={setChecklist} />
