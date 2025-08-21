@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import type { Document } from '../../types';
 
 type Props = {
-  value: Document[];
+  value?: Document[]; // ← opcional
   onChange: (docs: Document[]) => void;
 };
 
-const NewVesselDocumentsPanel: React.FC<Props> = ({ value, onChange }) => {
+const NewVesselDocumentsPanel: React.FC<Props> = ({ value = [], onChange }) => { // ← default []
   const [name, setName] = useState('');
 
   const add = () => {
@@ -18,11 +18,11 @@ const NewVesselDocumentsPanel: React.FC<Props> = ({ value, onChange }) => {
       url: '#',
       uploadedAt: new Date().toISOString(),
     };
-    onChange([...value, doc]);
+    onChange([...(value || []), doc]); // ← defensivo
     setName('');
   };
 
-  const remove = (id: string) => onChange(value.filter(d => d.id !== id));
+  const remove = (id: string) => onChange((value || []).filter(d => d.id !== id));
 
   return (
     <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
@@ -44,11 +44,11 @@ const NewVesselDocumentsPanel: React.FC<Props> = ({ value, onChange }) => {
         </button>
       </div>
 
-      {value.length === 0 ? (
+      {(value || []).length === 0 ? (
         <div className="text-slate-400 text-sm">No documents added yet.</div>
       ) : (
         <ul className="space-y-2">
-          {value.map(d => (
+          {(value || []).map(d => (
             <li key={d.id} className="flex items-center justify-between bg-navy-900 border border-navy-700 rounded-lg px-3 py-2">
               <span className="text-slate-200 text-sm truncate">{d.name}</span>
               <button

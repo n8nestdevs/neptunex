@@ -1,7 +1,7 @@
 // src/pages/NewVesselPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Vessel, ChecklistItem } from '../types';
+import type { Vessel, ChecklistItem, Document, NotificationRule } from '../types';
 import { initialVessels } from '../data/mockData';
 
 import IdentificationFormCard, { IdentificationFormState } from '../components/newVessel/IdentificationFormCard';
@@ -39,10 +39,11 @@ const NewVesselPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Checklist para este buque
+  // Panels (derecha)
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [notifications, setNotifications] = useState<NotificationRule[]>([]);
 
-  // Helper para parches parciales
   const setFormPartial = (patch: Partial<FormState>) =>
     setForm(prev => ({ ...prev, ...patch }));
 
@@ -88,11 +89,13 @@ const NewVesselPage: React.FC = () => {
         destinationPort: form.destinationPort,
         eta: form.eta,
       },
-      documents: [],
+      documents,                    // ← lo que se armó en el panel
       complianceChecklist: checklist,
       position: latNum != null && lonNum != null
         ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
         : undefined,
+      // Si luego agregas notifications al tipo Vessel, puedes guardarlas aquí también.
+      // notifications,
     };
 
     initialVessels.push(newVessel);
@@ -101,7 +104,6 @@ const NewVesselPage: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      {/* Título */}
       <h1 className="text-2xl font-bold text-slate-100">Add New Vessel</h1>
 
       {error && (
@@ -110,25 +112,15 @@ const NewVesselPage: React.FC = () => {
         </div>
       )}
 
-      {/* Grid principal: igual que en VesselDetail */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
-        {/* Columna izquierda (span 2): Identification + Contact en 2 columnas; luego Voyage a todo el ancho */}
+        {/* Columna izquierda */}
         <div className="lg:col-span-2 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <IdentificationFormCard
-              value={form}
-              onChange={setFormPartial}
-            />
-            <ContactFormCard
-              value={form}
-              onChange={setFormPartial}
-            />
+            <IdentificationFormCard value={form} onChange={setFormPartial} />
+            <ContactFormCard value={form} onChange={setFormPartial} />
           </div>
 
-          <VoyageFormCard
-            value={form}
-            onChange={setFormPartial}
-          />
+          <VoyageFormCard value={form} onChange={setFormPartial} />
 
           <div className="flex justify-start pt-1">
             <button
@@ -141,11 +133,11 @@ const NewVesselPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Columna derecha (span 1): Panels apilados como en el detalle */}
+        {/* Columna derecha */}
         <div className="lg:col-span-1 space-y-4">
-          <NewVesselDocumentsPanel />
+          <NewVesselDocumentsPanel value={documents} onChange={setDocuments} />
           <NewVesselChecklistPanel value={checklist} onChange={setChecklist} />
-          <NewVesselNotificationsPanel />
+          <NewVesselNotificationsPanel value={notifications} onChange={setNotifications} />
         </div>
       </form>
     </div>

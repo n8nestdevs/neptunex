@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import type { NotificationRule } from '../../types';
 
 type Props = {
-  value: NotificationRule[];
+  value?: NotificationRule[];
   onChange: (items: NotificationRule[]) => void;
 };
 
-const NewVesselNotificationsPanel: React.FC<Props> = ({ value, onChange }) => {
+const NewVesselNotificationsPanel: React.FC<Props> = ({ value = [], onChange }) => {
   const [channel, setChannel] = useState<'email'|'phone'>('email');
   const [target, setTarget] = useState('');
   const [label, setLabel] = useState('');
@@ -20,12 +20,12 @@ const NewVesselNotificationsPanel: React.FC<Props> = ({ value, onChange }) => {
       target: t,
       label: label.trim() || undefined,
     };
-    onChange([...value, item]);
+    onChange([...(value || []), item]);
     setTarget('');
     setLabel('');
   };
 
-  const remove = (id: string) => onChange(value.filter(v => v.id !== id));
+  const remove = (id: string) => onChange((value || []).filter(v => v.id !== id));
 
   return (
     <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
@@ -63,11 +63,11 @@ const NewVesselNotificationsPanel: React.FC<Props> = ({ value, onChange }) => {
         </button>
       </div>
 
-      {value.length === 0 ? (
+      {(value || []).length === 0 ? (
         <div className="text-slate-400 text-sm">No notifications configured.</div>
       ) : (
         <ul className="space-y-2">
-          {value.map(n => (
+          {(value || []).map(n => (
             <li key={n.id} className="flex items-center justify-between bg-navy-900 border border-navy-700 rounded-lg px-3 py-2">
               <div className="text-slate-200 text-sm truncate">
                 <span className="px-2 py-0.5 mr-2 rounded bg-navy-800 border border-navy-600 text-slate-300 text-xs">
