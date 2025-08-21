@@ -1,151 +1,84 @@
 // src/pages/NewVesselPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Vessel, ChecklistItem } from '../types';
-import { initialVessels } from '../data/mockData';
-
-import IdentificationFormCard, { IdentificationFormState } from '../components/newVessel/IdentificationFormCard';
-import ContactFormCard, { ContactFormState } from '../components/newVessel/ContactFormCard';
-import VoyageFormCard, { VoyageFormState } from '../components/newVessel/VoyageFormCard';
-
-import NewVesselChecklistPanel from '../components/newVessel/NewVesselChecklistPanel';
-import NewVesselDocumentsPanel from '../components/newVessel/NewVesselDocumentsPanel';
-import NewVesselNotificationsPanel from '../components/newVessel/NewVesselNotificationsPanel';
-
-export type FormState = IdentificationFormState & ContactFormState & VoyageFormState;
 
 const NewVesselPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const [form, setForm] = useState<FormState>({
-    // Identification
-    id: '',
-    name: '',
-    flag: '',
-    // Contact
-    email: '',
-    phone: '',
-    // Voyage
-    departurePort: '',
-    etd: '',
-    destinationPort: '',
-    eta: '',
-    lat: '',
-    lon: '',
-    sog: '',
-    cog: '',
-  });
-
-  const [error, setError] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-
-  // checklist para este buque
-  const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
-
-  // Helpers
-  const setFormPartial = (patch: Partial<FormState>) =>
-    setForm(prev => ({ ...prev, ...patch }));
-
-  const validate = () => {
-    if (!form.id || !form.name || !form.flag) return 'Required fields missing (IMO, Name, Flag).';
-    if (!form.etd || !form.eta) return 'You must enter ETD and ETA.';
-    if (form.lat && isNaN(Number(form.lat))) return 'Latitude must be numeric.';
-    if (form.lon && isNaN(Number(form.lon))) return 'Longitude must be numeric.';
-    if (form.lat) {
-      const v = Number(form.lat);
-      if (v < -90 || v > 90) return 'Latitude out of range (-90 to 90).';
-    }
-    if (form.lon) {
-      const v = Number(form.lon);
-      if (v < -180 || v > 180) return 'Longitude out of range (-180 to 180).';
-    }
-    if (form.sog && isNaN(Number(form.sog))) return 'SOG must be numeric.';
-    if (form.cog && isNaN(Number(form.cog))) return 'COG must be numeric.';
-    return null;
-  };
+  const [imo, setImo] = useState('');
+  const [name, setName] = useState('');
+  const [flag, setFlag] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const err = validate();
-    if (err) { setError(err); return; }
-
-    setSaving(true);
-
-    const latNum = form.lat ? Number(form.lat) : undefined;
-    const lonNum = form.lon ? Number(form.lon) : undefined;
-    const sogNum = form.sog ? Number(form.sog) : undefined;
-    const cogNum = form.cog ? Number(form.cog) : undefined;
-
-    const newVessel: Vessel = {
-      id: form.id,
-      name: form.name,
-      flag: form.flag,
-      imageUrl: 'https://picsum.photos/seed/' + encodeURIComponent(form.id) + '/800/600',
-      contact: { email: form.email, phone: form.phone },
-      voyage: {
-        departurePort: form.departurePort,
-        etd: form.etd,
-        destinationPort: form.destinationPort,
-        eta: form.eta,
-      },
-      documents: [],
-      complianceChecklist: checklist,
-      position: latNum != null && lonNum != null
-        ? { lat: latNum, lon: lonNum, sog: sogNum, cog: cogNum }
-        : undefined,
-    };
-
-    initialVessels.push(newVessel);
+    // Por ahora solo validamos que no esté vacío y volvemos a tracking.
+    if (!imo || !name || !flag) return;
     navigate('/tracking');
   };
 
   return (
     <div className="space-y-4">
-      {/* Título */}
       <h1 className="text-2xl font-bold text-slate-100">Add New Vessel</h1>
 
-      {error && (
-        <div className="p-3 rounded bg-red-900/40 border border-red-700 text-red-200">
-          {error}
-        </div>
-      )}
-
-      {/* Grid principal: igual que en VesselDetail */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
-        {/* Columna izquierda (span 2): Identification + Contact en 2 columnas, luego Voyage a todo el ancho */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <IdentificationFormCard
-              value={form}
-              onChange={setFormPartial}
-            />
-            <ContactFormCard
-              value={form}
-              onChange={setFormPartial}
-            />
-          </div>
+        {/* Columna izquierda (form) */}
+        <div className="lg:col-span-2">
+          <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4 space-y-4">
+            <div>
+              <label className="block text-slate-300 text-sm mb-1">IMO *</label>
+              <input
+                value={imo}
+                onChange={e => setImo(e.target.value)}
+                placeholder="IMO9334567"
+                className="w-full p-2 rounded bg-navy-900 border border-navy-700 text-slate-100"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-slate-300 text-sm mb-1">Name *</label>
+              <input
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="Andromeda Voyager"
+                className="w-full p-2 rounded bg-navy-900 border border-navy-700 text-slate-100"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-slate-300 text-sm mb-1">Flag *</label>
+              <input
+                value={flag}
+                onChange={e => setFlag(e.target.value)}
+                placeholder="Panama"
+                className="w-full p-2 rounded bg-navy-900 border border-navy-700 text-slate-100"
+                required
+              />
+            </div>
 
-          <VoyageFormCard
-            value={form}
-            onChange={setFormPartial}
-          />
-
-          <div className="flex justify-start pt-1">
-            <button
-              type="submit"
-              disabled={saving}
-              className="bg-teal-500 hover:bg-teal-400 text-navy-900 font-semibold px-4 py-2 rounded-md border border-teal-400 disabled:opacity-60"
-            >
-              {saving ? 'Saving…' : 'Save'}
-            </button>
+            <div className="pt-1">
+              <button
+                type="submit"
+                className="bg-teal-500 hover:bg-teal-400 text-navy-900 font-semibold px-4 py-2 rounded-md border border-teal-400"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Columna derecha (span 1): Panels apilados como en el detalle */}
+        {/* Columna derecha (placeholder mientras re‑conectamos los panels) */}
         <div className="lg:col-span-1 space-y-4">
-          <NewVesselDocumentsPanel />
-          <NewVesselChecklistPanel value={checklist} onChange={setChecklist} />
-          <NewVesselNotificationsPanel />
+          <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
+            <div className="text-slate-300 font-medium mb-2">Documentation</div>
+            <div className="text-slate-500 text-sm">Coming soon…</div>
+          </div>
+          <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
+            <div className="text-slate-300 font-medium mb-2">Checklist</div>
+            <div className="text-slate-500 text-sm">Coming soon…</div>
+          </div>
+          <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
+            <div className="text-slate-300 font-medium mb-2">Notifications</div>
+            <div className="text-slate-500 text-sm">Coming soon…</div>
+          </div>
         </div>
       </form>
     </div>
