@@ -31,7 +31,7 @@ const DetailPage: React.FC = () => {
         type="button"
       >
         <IconArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-        <span>Return to Tracking</span>
+        <span>Return</span>
       </button>
 
       {vessel ? (

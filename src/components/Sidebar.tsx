@@ -85,7 +85,7 @@ const Sidebar: React.FC = () => {
 
       {/* footer */}
       <div className="p-3 text-slate-500 text-xs">
-        {!collapsed && <div>Developed by ElonTheCat</div>}
+        {!collapsed && <div>Developed by n8nest.ai</div>}
       </div>
     </aside>
   );
