@@ -18,7 +18,7 @@ const Header: React.FC = () => {
           aria-label="Go to NEPTUNex"
         >
           <LogoNeptunex className="w-7 h-7 text-teal-400 mr-2" />
-          <span className="font-semibold tracking-wide">NEPTUNex</span>
+          <span className="font-semibold tracking-wide">FRAZZER SHIPPING</span>
         </Link>
 
         {/* Right side */}
