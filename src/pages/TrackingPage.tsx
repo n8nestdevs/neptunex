@@ -1,11 +1,12 @@
 // src/pages/TrackingPage.tsx
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import type { Vessel } from '../types';
 import { initialVessels } from '../data/mockData';
 
 const TrackingPage: React.FC = () => {
   const now = Date.now();
+  const navigate = useNavigate();
 
   // Consideramos "forzado/completado" si el objeto trae estas marcas opcionales
   const isCompleted = (v: Vessel) =>
@@ -50,13 +51,14 @@ const TrackingPage: React.FC = () => {
           ))}
 
           {/* “+” add vessel card */}
-          <Link
-            to="/vessel/new"
-            className="flex items-center justify-center bg-navy-800 rounded-lg shadow-lg border border-dashed border-teal-400 hover:bg-navy-700 transition-all"
+          <button
+            type="button"
+            onClick={() => navigate('/vessel/new')}
+            className="flex items-center justify-center bg-navy-800 rounded-lg shadow-lg border border-dashed border-teal-400 hover:bg-navy-700 transition-all outline-none focus:outline-none focus:ring-0"
             aria-label="Add new vessel"
           >
             <span className="text-5xl leading-none text-teal-400">+</span>
-          </Link>
+          </button>
         </div>
       )}
     </div>
