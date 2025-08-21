@@ -26,16 +26,23 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    // Fondo a pantalla completa gris claro (no overlays, no imágenes)
-    <div className="min-h-screen w-screen bg-gray-100 flex items-center justify-center px-4">
+    <div
+      className="min-h-screen w-screen flex items-center justify-center px-4"
+      style={{
+        backgroundImage: 'url(/fondo.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#eef2f5', // fallback suave si no carga la imagen
+      }}
+    >
       {/* Card blanca */}
       <div className="w-full max-w-md bg-white border border-gray-200 rounded-xl shadow-xl p-6">
-        {/* Logo (asegúrate de poner el archivo en /public/frazer-logo.png) */}
         <div className="w-full flex justify-center mb-4">
           <img
             src="/frazeroil.jpeg"
             alt="FRAZEROIL"
-            className="h-20 object-contain"
+            className="h-16 object-contain"
           />
         </div>
 
@@ -64,7 +71,7 @@ const LoginPage: React.FC = () => {
             />
           </div>
 
-        {err && <p className="text-red-600 text-sm">{err}</p>}
+          {err && <p className="text-red-600 text-sm">{err}</p>}
 
           <button
             type="submit"
@@ -75,7 +82,7 @@ const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        <p className="text-center text-xs text-gray-500 mt-3">
+        <p className="text-center text-xs text-gray-600 mt-3">
           Demo: <span className="font-mono">super@neptuno.local</span> / <span className="font-mono">admin12345</span>
         </p>
       </div>
