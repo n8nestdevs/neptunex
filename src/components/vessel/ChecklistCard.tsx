@@ -1,13 +1,17 @@
+// src/components/vessel/ChecklistCard.tsx
 import React, { useMemo, useState } from 'react';
 import { Vessel } from '../../types';
 import SectionCard from './SectionCard';
 import { IconCheck } from '../Icons';
 import { useAppContext } from '../../context/AppContext';
-import { UserRole } from '../../types';
+import { useAuth } from '../../context/AuthContext';
 
 const ChecklistCard: React.FC<{ vessel: Vessel }> = ({ vessel }) => {
-  const { userRole, updateChecklistItem, addChecklistItem, getChecklistTemplate } = useAppContext();
-  const isAdmin = userRole === UserRole.Admin;
+  const { updateChecklistItem, addChecklistItem, getChecklistTemplate } = useAppContext();
+  const { user } = useAuth();
+
+  // Admin si el rol del usuario autenticado es Admin o SuperAdmin
+  const isAdmin = user?.role === 'Admin' || user?.role === 'SuperAdmin';
 
   // Opciones disponibles = plantilla global menos los ya presentes
   const availableOptions = useMemo(() => {
@@ -25,7 +29,6 @@ const ChecklistCard: React.FC<{ vessel: Vessel }> = ({ vessel }) => {
 
   return (
     <SectionCard title="Checklist" icon={<IconCheck className="w-6 h-6" />}>
-      {/* Admin: agregar desde listado global */}
       {isAdmin && (
         <div className="mb-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
           <select
@@ -59,6 +62,7 @@ const ChecklistCard: React.FC<{ vessel: Vessel }> = ({ vessel }) => {
                 onChange={(e) => isAdmin && updateChecklistItem(vessel.id, item.id, e.target.checked)}
                 disabled={!isAdmin}
                 className="w-5 h-5 rounded bg-navy-700 border-slate-400 text-teal-500 focus:ring-teal-400 disabled:opacity-50"
+                aria-label={item.task}
               />
               <span className={`ml-3 text-sm ${item.completed ? 'text-slate-400 line-through' : 'text-slate-200'}`}>
                 {item.task}
