@@ -9,10 +9,12 @@ import HomePage from './pages/HomePage';
 import TrackingPage from './pages/TrackingPage';
 import ShipmentLogPage from './pages/ShipmentLogPage';
 import DetailPage from './pages/DetailPage';
-import NewVesselPage from './pages/NewVesselPage';
 import LoginPage from './pages/LoginPage';
 import SuperAdminPage from './pages/SuperAdminPage';
-import CheckpointsAlertsPage from './pages/CheckpointsAlertsPage'; // ⬅️ NUEVO
+import CheckpointsAlertsPage from './pages/CheckpointsAlertsPage';
+
+// ✨ Nueva página segura para crear buques
+import NewVesselPageSafe from './pages/NewVesselPageSafe';
 
 import { AppProvider } from './context/AppContext';
 import { AuthProvider } from './context/AuthContext';
@@ -23,7 +25,6 @@ const AppFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <Header />
     <div className="flex">
       <Sidebar />
-      {/* Menos padding arriba para alinear con el primer item del sidebar */}
       <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-4">
         {children}
       </main>
@@ -37,7 +38,6 @@ function App() {
       <AppProvider>
         <HashRouter>
           <Routes>
-            {/* Login limpio, sin wrappers ni fondos extra */}
             <Route path="/login" element={<LoginPage />} />
 
             <Route
@@ -80,16 +80,19 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* 👇 Ruta usando la página segura */}
             <Route
               path="/vessel/new"
               element={
                 <ProtectedRoute roles={['Admin', 'SuperAdmin']}>
                   <AppFrame>
-                    <NewVesselPage />
+                    <NewVesselPageSafe />
                   </AppFrame>
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/vessel/:vesselId"
               element={
