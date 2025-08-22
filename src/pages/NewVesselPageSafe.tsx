@@ -1,4 +1,3 @@
-// src/pages/NewVesselPageSafe.tsx
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Vessel, ChecklistItem, Document } from '../types';
@@ -262,24 +261,43 @@ const NewVesselPageSafe: React.FC = () => {
             )}
           </div>
 
-          {/* Notifications (solo UI) */}
+          {/* Notifications (inline, FIXED layout) */}
           <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
             <h2 className="text-lg font-semibold text-slate-100 mb-3">Notifications</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-[110px_1fr_120px] gap-2 mb-3">
-              <select className="p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
-                onChange={e=>setCh(e.target.value as 'email'|'phone')} value={ch}>
+
+            {/* Una sola fila: select + target + label + botón */}
+            <div className="grid grid-cols-1 sm:grid-cols-[110px_minmax(0,1fr)_minmax(0,180px)_auto] items-center gap-2">
+              <select
+                className="p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
+                onChange={e=>setCh(e.target.value as 'email'|'phone')}
+                value={ch}
+              >
                 <option value="email">Email</option>
                 <option value="phone">Phone</option>
               </select>
-              <input className="p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
-                placeholder={ch==='email'?'email@example.com':'+56 9 1234 5678'} value={tg} onChange={e=>setTg(e.target.value)} />
-              <input className="p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
-                placeholder="Label (optional)" value={lb} onChange={e=>setLb(e.target.value)} />
+
+              <input
+                className="min-w-0 p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
+                placeholder={ch==='email' ? 'email@example.com' : '+56 9 1234 5678'}
+                value={tg}
+                onChange={e=>setTg(e.target.value)}
+              />
+
+              <input
+                className="min-w-0 p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
+                placeholder="Label (optional)"
+                value={lb}
+                onChange={e=>setLb(e.target.value)}
+              />
+
+              <button
+                type="button"
+                onClick={addNotif}
+                className="px-3 py-2 rounded bg-teal-500 hover:bg-teal-400 text-navy-900 font-semibold border border-teal-400"
+              >
+                Add
+              </button>
             </div>
-            <button type="button" onClick={addNotif}
-              className="px-3 py-2 rounded bg-teal-500 hover:bg-teal-400 text-navy-900 font-semibold border border-teal-400">
-              Add
-            </button>
 
             {notifications.length>0 && (
               <ul className="mt-3 space-y-2">
@@ -289,8 +307,11 @@ const NewVesselPageSafe: React.FC = () => {
                       <span className="px-2 py-0.5 mr-2 rounded bg-navy-800 border border-navy-600 text-slate-300 text-xs">{n.channel}</span>
                       {n.target}{n.label && <span className="ml-2 text-slate-400">• {n.label}</span>}
                     </div>
-                    <button type="button" onClick={()=>setNotifications(ns=>ns.filter(x=>x.id!==n.id))}
-                      className="text-sm px-2 py-1 rounded bg-navy-800 border border-navy-600 hover:bg-navy-700 text-slate-200">
+                    <button
+                      type="button"
+                      onClick={()=>setNotifications(ns=>ns.filter(x=>x.id!==n.id))}
+                      className="text-sm px-2 py-1 rounded bg-navy-800 border border-navy-600 hover:bg-navy-700 text-slate-200"
+                    >
                       Remove
                     </button>
                   </li>
