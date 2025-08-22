@@ -266,7 +266,7 @@ const NewVesselPageSafe: React.FC = () => {
             <h2 className="text-lg font-semibold text-slate-100 mb-3">Notifications</h2>
 
             {/* Una sola fila: select + target + label + botón */}
-            <div className="grid grid-cols-1 sm:grid-cols-[110px_minmax(0,1fr)_minmax(0,180px)_auto] items-center gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-[110px_minmax(0,1fr)_auto] items-center gap-2">
               <select
                 className="p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
                 onChange={e=>setCh(e.target.value as 'email'|'phone')}
@@ -288,7 +288,7 @@ const NewVesselPageSafe: React.FC = () => {
               <button
                 type="button"
                 onClick={addNotif}
-                className="px-3 py-2 rounded bg-teal-500 hover:bg-teal-400 text-navy-900 font-semibold border border-teal-400"
+                className="w-auto justify-self-start whitespace-nowrap px-3 py-2 rounded bg-teal-500 hover:bg-teal-400 text-navy-900 font-semibold border border-teal-400"
               >
                 Add
               </button>
