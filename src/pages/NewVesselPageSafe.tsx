@@ -27,8 +27,7 @@ const NewVesselPageSafe: React.FC = () => {
   // ---------------- Estados locales de la columna derecha
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [documents, setDocuments]   = useState<Document[]>([]);
-  const [notifications, setNotifications] =
-    useState<{id:string; channel:'email'|'phone'; target:string; label?:string}[]>([]);
+  const [notifications, setNotifications] = useState<{id:string; channel:'email'|'phone'; target:string}[]>([]);
   const [error, setError] = useState<string|null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -105,11 +104,10 @@ const NewVesselPageSafe: React.FC = () => {
 
   const [ch, setCh] = useState<'email'|'phone'>('email');
   const [tg, setTg] = useState('');
-  const [lb, setLb] = useState(''); // ← se mantiene pero no se muestra (por si luego lo quieres usar)
   const addNotif = () => {
     const t = tg.trim(); if (!t) return;
-    setNotifications(ns => [...ns, { id:`n-${Date.now()}`, channel: ch, target: t, label: lb.trim() || undefined }]);
-    setTg(''); setLb('');
+    setNotifications(ns => [...ns, { id:`n-${Date.now()}`, channel: ch, target: t }]);
+    setTg('');
   };
 
   return (
@@ -118,17 +116,14 @@ const NewVesselPageSafe: React.FC = () => {
       {error && <div className="p-3 rounded bg-red-900/40 border border-red-700 text-red-200">{error}</div>}
 
       <form onSubmit={onSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
-        {/* Columna izquierda (omitida aquí para abreviar, sin cambios) */}
+        {/* ... columnas izquierda omitidas por brevedad ... */}
 
         {/* Columna derecha */}
         <div className="lg:col-span-1 space-y-4">
-          {/* ... Documents y Checklist (sin cambios) ... */}
-
-          {/* Notifications (inline, sin Label) */}
+          {/* Notifications (sin Label) */}
           <div className="bg-navy-800/60 border border-navy-700 rounded-xl p-4">
             <h2 className="text-lg font-semibold text-slate-100 mb-3">Notifications</h2>
 
-            {/* Fila: select + target + botón */}
             <div className="grid grid-cols-1 sm:grid-cols-[110px_minmax(0,1fr)_auto] items-center gap-2">
               <select
                 className="p-2 rounded bg-navy-900 border border-navy-700 text-slate-200"
@@ -161,7 +156,7 @@ const NewVesselPageSafe: React.FC = () => {
                   <li key={n.id} className="flex items-center justify-between bg-navy-900 border border-navy-700 rounded-lg px-3 py-2">
                     <div className="text-slate-200 text-sm truncate">
                       <span className="px-2 py-0.5 mr-2 rounded bg-navy-800 border border-navy-600 text-slate-300 text-xs">{n.channel}</span>
-                      {n.target}{n.label && <span className="ml-2 text-slate-400">• {n.label}</span>}
+                      {n.target}
                     </div>
                     <button
                       type="button"
